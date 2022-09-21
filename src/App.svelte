@@ -26,5 +26,12 @@
         {/each}
       </div>  
     {/if}
+    {#if city && !cities.length}
+      <div class="absolute top-16 w-full bg-white mt-3 transition-all rounded-2xl max-h-72 overflow-y-auto p-2 z-50">
+        <h1 class="px-6 py-2 mt-1 rounded-lg select-none whitespace-nowrap overflow-hidden text-ellipsis text-primary">
+          لا يوجد مدينة بهذا الاسم
+        </h1>
+      </div>
+    {/if}
   </div>
 </main>
