@@ -50,7 +50,7 @@
     {/if}
 
     {#if search && show_input && !loading}
-      <div in:slide={{duration: 200}} out:slide={{duration: 200}} class={`absolute top-16 w-full bg-white mt-3 transition-all rounded-2xl ${cities.length ? 'h-72' : 'h-auto'} overflow-y-auto p-2 z-50`}>
+      <div in:slide={{duration: 200}} out:slide={{duration: 200}} class={`absolute top-16 w-full bg-white mt-3 transition-all rounded-2xl ${cities.length >= 10 ? 'h-72' : 'h-auto'} overflow-y-auto p-2 z-50`}>
         
         {#if cities?.length}
           <LazyList
