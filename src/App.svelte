@@ -39,17 +39,17 @@
       </div>
     {/if}
 
-    {#if search && cities.length}
+    {#if search}
       <div in:slide={{duration: 200}} out:slide={{duration: 200}} class="absolute top-16 w-full bg-white mt-3 transition-all rounded-2xl max-h-72 overflow-y-auto p-2 z-50">
         {#each cities as city}
           <h1 on:click={() => choose_city(city)} class="px-6 py-2 mt-1 rounded-lg select-none whitespace-nowrap overflow-hidden text-ellipsis hover:bg-gray-100 text-primary cursor-pointer">{city}</h1>
         {/each}
+        {#if !cities?.length}
+          <h1 class="px-6 py-2 mt-1 rounded-lg select-none whitespace-nowrap overflow-hidden text-ellipsis text-primary">
+            لا يوجد مدينة بهذا الاسم
+          </h1>
+        {/if}
       </div>  
-    {/if}
-    {#if search && !data.includes(search) && !cities.length}
-      <div in:slide={{duration: 200}} out:slide={{duration: 200}} class="absolute top-16 w-full bg-white mt-3 transition-all rounded-2xl max-h-72 overflow-y-auto p-2 z-50">
-        
-      </div>
     {/if}
   </div>
 </main>
