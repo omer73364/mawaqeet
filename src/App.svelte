@@ -35,7 +35,7 @@
 <!-- BG ovrelay -->
 <div class="absolute backdrop-blur-[3px] inset-0 w-full h-screen z-0 bg-black bg-opacity-40"/>
 
-<main class="absolute inset-0 w-full h-screen z-50 flex items-center justify-center">  
+<main class="absolute inset-0 w-full h-screen z-50 flex items-center justify-center px-8">  
   <div class="w-96 relative">
     
     {#if show_input}
@@ -43,7 +43,7 @@
         <Input 
           placeholder='المدينة' 
           value={search}
-          loading={loading} 
+          loading={loading}
           on_input={search_for_city} 
         />
       </div>
