@@ -33,7 +33,7 @@
 </script>
 
 <!-- BG ovrelay -->
-<div class="absolute inset-0 w-full h-screen z-0 bg-black bg-opacity-40"/>
+<div class="absolute backdrop-blur-[3px] inset-0 w-full h-screen z-0 bg-black bg-opacity-40"/>
 
 <main class="absolute inset-0 w-full h-screen z-50 flex items-center justify-center">  
   <div class="w-96 relative">
