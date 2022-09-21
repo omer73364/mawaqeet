@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app{
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('./imgs/bg.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.input:focus-visible{
+    outline-color:#303f38 !important;
+}
+
+input{
+    -webkit-text-security: square;
+    outline: 2px solid transparent !important;
+}
