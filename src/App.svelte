@@ -9,6 +9,7 @@
   // Data
   let time = new Date().toLocaleTimeString();
   let search = ''
+  let error = ''
   let data = []
   let cities = []
   let show_input = true
@@ -69,16 +70,23 @@
   const get_data = async(link) => {
     is_loading = true
     const result = await (await fetch(link)).json()
-    is_loading = false
-    show_input = false
-    console.log(result)
-    mawaqeet_data = {
-      city: search.split('-')[0],
-      date:result?.data?.date?.gregorian?.day + '/' + get_arabic_month(result?.data?.date?.gregorian?.month?.number) + '/' + result?.data?.date?.gregorian?.year + 'م',
-      hijri: result?.data?.date?.hijri?.day + '/' + result?.data?.date?.hijri?.month?.ar + '/' + result?.data?.date?.hijri?.year + 'هـ',
-      timezone: result?.data?.meta?.timezone,
-      timings: result?.data?.timings
+    if(result?.code == 200){
+      is_loading = false
+      show_input = false
+      mawaqeet_data = {
+        city: search.split('-')[0],
+        date:result?.data?.date?.gregorian?.day + '/' + get_arabic_month(result?.data?.date?.gregorian?.month?.number) + '/' + result?.data?.date?.gregorian?.year + 'م',
+        hijri: result?.data?.date?.hijri?.day + '/' + result?.data?.date?.hijri?.month?.ar + '/' + result?.data?.date?.hijri?.year + 'هـ',
+        timezone: result?.data?.meta?.timezone,
+        timings: result?.data?.timings
+      }
     }
+    else {
+      search = ''
+      cities = []
+      error = 'لا يوجد بيانات لهذه المدينة!'
+    }
+    is_loading = false
   }
   const choose_city = (value) => {
     search = value
@@ -153,6 +161,8 @@
             loading={is_loading}
             on_input={search_for_city} 
           />
+          <!-- display request error -->
+          <h1 class="text-xl text-white mt-2 text-right">{error}</h1>
         </div>
       {/if}
       <!-- Select cities -->
