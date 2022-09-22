@@ -116,7 +116,7 @@
       {#if show_input && !is_getting_data}
         <div out:blur={{duration: 500}} in:blur={{duration: 500}}>
           <h1 class="text-4xl text-white mb-4 text-center">مواقيت الصلاة</h1>
-          <Input 
+          <Input
             placeholder='المدينة' 
             value={search}
             loading={is_loading}
