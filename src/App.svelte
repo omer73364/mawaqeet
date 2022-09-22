@@ -5,12 +5,40 @@
   import Loading from './components/Loading.svelte'
   import { onMount } from "svelte";
 
+  let time = new Date().toLocaleTimeString();
+
   let search = ''
   let data = []
   let cities = []
   let show_input = true
   let is_loading = false
   let is_getting_data = true
+  let mawaqeet_data
+  const arabic_months = [
+    'ياناير',
+    'فبراير',
+    'مارس',
+    'أبريل',
+    'مايو',
+    'يونيو',
+    'يوليو',
+    'أغسطس',
+    'سبتمبر',
+    'أكتوبر',
+    'نوفمير',
+    'ديسمبر',
+  ]
+
+  const get_arabic_month = (month) => arabic_months[month-1]
+  const format_time = (time) => {
+    const result = time
+    let [t,a] = result.split(' ')
+    t = t.split(':')
+    t.pop()
+    t = t.join(':')
+    a = a.toLocaleLowerCase() == 'pm' ? 'م' : 'ص'
+    return `${t} ${a}`
+  }
   
   const search_for_city = (event) => {
     const text = event.target.value
@@ -24,6 +52,13 @@
     is_loading = false
     show_input = false
     console.log(result)
+    mawaqeet_data = {
+      city: search.split('-')[0],
+      date:result?.data?.date?.gregorian?.day + '/' + get_arabic_month(result?.data?.date?.gregorian?.month?.number) + '/' + result?.data?.date?.gregorian?.year + 'م',
+      hijri: result?.data?.date?.hijri?.day + '/' + result?.data?.date?.hijri?.month?.ar + '/' + result?.data?.date?.hijri?.year + 'هـ',
+      day: result?.data?.date?.hijri?.weekday?.ar,
+      time: new Date().toLocaleTimeString()
+    }
   }
 
   const choose_city = (value) => {
@@ -44,6 +79,13 @@
 
   onMount(()=>{
     get_countries()
+    const interval = setInterval(() => {
+			time = new Date().toLocaleTimeString();
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
   })
 </script>
 
@@ -52,7 +94,17 @@
 
 <main class="absolute inset-0 w-full h-screen z-50 flex items-center justify-center px-8">  
   <div class="w-96 relative">
-    
+  {#if mawaqeet_data}
+    <!-- Render data -->
+    <div in:slide={{duration:500,delay:800}} class="w-full h-64 rounded-2xl bg-primary p-4 flex flex-col">
+      <h1 class="text-white text-4xl">{mawaqeet_data.city}</h1>
+      <h1 class="text-white text-4xl">{format_time(time)}</h1>
+      <h1 class="text-white text-4xl">{mawaqeet_data.date}</h1>
+      <h1 class="text-white text-4xl">{mawaqeet_data.hijri}</h1>
+      <h1 class="text-white text-4xl">{mawaqeet_data.day}</h1>
+    </div>
+  {:else}
+    <!-- Search input -->
     {#if show_input && !is_getting_data}
       <div out:blur={{duration: 500}}>
         <h1 class="text-4xl text-white mb-4 text-center">مواقيت الصلاة</h1>
@@ -64,7 +116,7 @@
         />
       </div>
     {/if}
-
+    <!-- Select cities -->
     {#if search && show_input && !is_loading}
       <div in:slide={{duration: 200}} out:slide={{duration: 200}} class={`absolute top-[7.5rem] w-full bg-white mt-3 transition-all rounded-2xl ${cities.length >= 10 ? 'h-72' : 'h-auto'} overflow-y-auto p-2 z-50`}>
         
@@ -86,10 +138,11 @@
 
       </div>  
     {/if}
-    
+  {/if}
   </div>
 </main>
 
+<!-- Full screen loading -->
 {#if is_getting_data}
   <Loading/>
 {/if}
