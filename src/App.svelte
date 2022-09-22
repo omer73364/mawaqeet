@@ -56,8 +56,9 @@
       city: search.split('-')[0],
       date:result?.data?.date?.gregorian?.day + '/' + get_arabic_month(result?.data?.date?.gregorian?.month?.number) + '/' + result?.data?.date?.gregorian?.year + 'م',
       hijri: result?.data?.date?.hijri?.day + '/' + result?.data?.date?.hijri?.month?.ar + '/' + result?.data?.date?.hijri?.year + 'هـ',
-      day: result?.data?.date?.hijri?.weekday?.ar,
-      time: new Date().toLocaleTimeString()
+      timezone: result?.data?.meta?.timezone
+      // day: result?.data?.date?.hijri?.weekday?.ar,
+      // time: new Date().toLocaleTimeString()
     }
   }
 
@@ -80,7 +81,7 @@
   onMount(()=>{
     get_countries()
     const interval = setInterval(() => {
-			time = new Date().toLocaleTimeString();
+			time = new Date().toLocaleTimeString('en-US',{timeZone: mawaqeet_data?.timezone || ''});
 		}, 1000);
 
 		return () => {
@@ -96,12 +97,12 @@
   <div class="w-96 relative">
   {#if mawaqeet_data}
     <!-- Render data -->
-    <div in:slide={{duration:500,delay:800}} class="w-full h-64 rounded-2xl bg-primary p-4 flex flex-col">
-      <h1 class="text-white text-4xl">{mawaqeet_data.city}</h1>
+    <div in:slide={{duration:500,delay:800}} class="w-full rounded-2xl bg-primary py-6 px-8 flex flex-col relative">
+      <img class="absolute top-6 left-8" src="./imgs/pin.svg" alt="pin" width="30"/>
       <h1 class="text-white text-4xl">{format_time(time)}</h1>
-      <h1 class="text-white text-4xl">{mawaqeet_data.date}</h1>
-      <h1 class="text-white text-4xl">{mawaqeet_data.hijri}</h1>
-      <h1 class="text-white text-4xl">{mawaqeet_data.day}</h1>
+      <h1 class="text-white text-6xl my-4">{mawaqeet_data.city}</h1>
+      <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.hijri}</h1>
+      <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.date}</h1>
     </div>
   {:else}
     <!-- Search input -->
