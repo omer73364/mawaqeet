@@ -94,7 +94,7 @@
     search = value
     cities = []
     const [city,country] = value.split('-')
-    const link = `http://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}`
+    const link = `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}`
     get_data(link)
   }
   const get_countries = async() => {
