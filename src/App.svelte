@@ -6,8 +6,8 @@
   import { onMount } from "svelte";
   import Github from "./components/Github.svelte";
 
+  // Data
   let time = new Date().toLocaleTimeString();
-
   let search = ''
   let data = []
   let cities = []
@@ -38,6 +38,7 @@
     "Isha":"العشاء",
   }
 
+  // methods
   const get_arabic_month = (month) => arabic_months[month-1]
   const get_arabic_time = (time) => arabic_times[time]
   const format_time = (time) => {
@@ -60,13 +61,11 @@
     }
     return time.join (''); // return adjusted time or original string
   }
-  
   const search_for_city = (event) => {
     const text = event.target.value
     search = text
     cities = data.filter(city => city.toLocaleLowerCase().includes(text.toLocaleLowerCase()))
   }
-
   const get_data = async(link) => {
     is_loading = true
     const result = await (await fetch(link)).json()
@@ -81,7 +80,6 @@
       timings: result?.data?.timings
     }
   }
-
   const choose_city = (value) => {
     search = value
     cities = []
@@ -89,7 +87,6 @@
     const link = `http://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}`
     get_data(link)
   }
-
   const get_countries = async() => {
     is_getting_data = true
     data = await (await fetch('./data/data.json')).json()
@@ -97,7 +94,6 @@
       is_getting_data = false
     }, 3000);
   }
-
   const change_city = () => {
     search_for_city({target:{value:search.split('-')[0]}})
     show_input = true
@@ -106,6 +102,7 @@
     }, 200);
   }
 
+  // life cycle
   onMount(()=>{
     get_countries()
     const interval = setInterval(() => {
@@ -134,6 +131,7 @@
         <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.date}</h1>
       </div>
 
+      <!-- timings table -->
       <div in:slide={{duration:500,delay:1500}} class="w-full mt-4 rounded-2xl bg-white py-6 px-8 flex flex-col relative">
         {#each Object.keys(arabic_times) as key}
           <div class="w-full flex items-center border-b border-primary border-opacity-20 py-4 last:border-b-0 justify-between">
@@ -189,7 +187,7 @@
   <Loading/>
 {/if}
 
-
+<!-- Developed by and github button -->
 {#if !is_getting_data}
   <Github/>
   <h4 in:blur={{duration:1000,delay:500}} class="fixed bottom-8 left-1/2 text-white text-2xl -translate-x-1/2 z-50">طُور بواسطة <a href="https://github.com/omer73364" target="_blank" class="hover:underline">عمر أنور</a> ♥</h4>
