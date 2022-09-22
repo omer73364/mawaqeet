@@ -12,7 +12,7 @@
   const search_for_city = (event) => {
     const text = event.target.value
     search = text
-    cities = data.filter(city => city.includes(text))
+    cities = data.filter(city => city.toLocaleLowerCase().includes(text.toLocaleLowerCase()))
   }
 
   const get_data = async(link) => {
