@@ -154,7 +154,7 @@
       <!-- Search input -->
       {#if show_input && !is_getting_data}
         <div out:blur={{duration: 500}} in:blur={{duration: 500}}>
-          <h1 class="text-4xl text-white mb-4 text-center">مواقيت الصلاة</h1>
+          <h1 class="text-3xl md:text-4xl text-white mb-4 text-center">مواقيت الصلاة</h1>
           <Input
             placeholder='اسم المدينة' 
             value={search}
@@ -167,7 +167,7 @@
       {/if}
       <!-- Select cities -->
       {#if search && show_input && !is_loading}
-        <div in:slide={{duration: 200}} out:slide={{duration: 200}} class={`absolute top-[7.5rem] w-full bg-white mt-3 transition-all rounded-2xl ${cities.length >= 10 ? 'h-72' : 'h-auto'} overflow-y-auto p-2 z-50`}>
+        <div in:slide={{duration: 200}} out:slide={{duration: 200}} class={`absolute top-28 md:top-[7.5rem] w-full bg-white mt-3 transition-all rounded-2xl ${cities.length >= 10 ? 'h-72' : 'h-auto'} overflow-y-auto p-2 z-50`}>
           
           {#if cities?.length}
             <LazyList
@@ -200,5 +200,5 @@
 <!-- Developed by and github button -->
 {#if !is_getting_data}
   <Github/>
-  <h4 in:blur={{duration:1000,delay:500}} class="fixed bottom-8 left-1/2 text-white text-2xl -translate-x-1/2 z-50">طُور بواسطة <a href="https://github.com/omer73364" target="_blank" class="hover:underline">عمر أنور</a> ♥</h4>
+  <h4 in:blur={{duration:1000,delay:500}} class="fixed whitespace-nowrap bottom-8 left-1/2 text-white text-lg md:text-2xl -translate-x-1/2 z-50">طُور بواسطة <a href="https://github.com/omer73364" target="_blank" class="hover:underline">عمر أنور</a> ♥</h4>
 {/if}
