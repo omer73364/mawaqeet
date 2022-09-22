@@ -189,4 +189,8 @@
   <Loading/>
 {/if}
 
-<Github/>
+
+{#if !is_getting_data}
+  <Github/>
+  <h4 in:blur={{duration:1000,delay:500}} class="fixed bottom-8 left-1/2 text-white text-2xl -translate-x-1/2 z-50">طُور بواسطة <a href="https://github.com/omer73364" target="_blank" class="hover:underline">عمر أنور</a> ♥</h4>
+{/if}
