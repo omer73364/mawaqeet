@@ -1,13 +1,16 @@
 <script>
   import Input from "./components/Input.svelte";
-  import data from './data/data.json'
   import {blur,slide} from 'svelte/transition';
   import LazyList from 'lazy-load-list/svelte'
+  import Loading from './components/Loading.svelte'
+  import { onMount } from "svelte";
 
-  let search = '';
+  let search = ''
+  let data = []
   let cities = []
   let show_input = true
-  let loading = false
+  let is_loading = false
+  let is_getting_data = true
   
   const search_for_city = (event) => {
     const text = event.target.value
@@ -16,9 +19,9 @@
   }
 
   const get_data = async(link) => {
-    loading = true
+    is_loading = true
     const result = await (await fetch(link)).json()
-    loading = false
+    is_loading = false
     show_input = false
     console.log(result)
   }
@@ -30,6 +33,18 @@
     const link = `http://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=8`
     get_data(link)
   }
+
+  const get_countries = async() => {
+    is_getting_data = true
+    data = await (await fetch('./data/data.json')).json()
+    setTimeout(() => {
+      is_getting_data = false
+    }, 3000);
+  }
+
+  onMount(()=>{
+    get_countries()
+  })
 </script>
 
 <!-- BG ovrelay -->
@@ -38,19 +53,20 @@
 <main class="absolute inset-0 w-full h-screen z-50 flex items-center justify-center px-8">  
   <div class="w-96 relative">
     
-    {#if show_input}
+    {#if show_input && !is_getting_data}
       <div out:blur={{duration: 500}}>
+        <h1 class="text-4xl text-white mb-4 text-center">مواقيت الصلاة</h1>
         <Input 
           placeholder='المدينة' 
           value={search}
-          loading={loading}
+          loading={is_loading}
           on_input={search_for_city} 
         />
       </div>
     {/if}
 
-    {#if search && show_input && !loading}
-      <div in:slide={{duration: 200}} out:slide={{duration: 200}} class={`absolute top-16 w-full bg-white mt-3 transition-all rounded-2xl ${cities.length >= 10 ? 'h-72' : 'h-auto'} overflow-y-auto p-2 z-50`}>
+    {#if search && show_input && !is_loading}
+      <div in:slide={{duration: 200}} out:slide={{duration: 200}} class={`absolute top-[7.5rem] w-full bg-white mt-3 transition-all rounded-2xl ${cities.length >= 10 ? 'h-72' : 'h-auto'} overflow-y-auto p-2 z-50`}>
         
         {#if cities?.length}
           <LazyList
@@ -73,3 +89,7 @@
     
   </div>
 </main>
+
+{#if is_getting_data}
+  <Loading/>
+{/if}
