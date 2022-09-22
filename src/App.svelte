@@ -156,7 +156,7 @@
         <div out:blur={{duration: 500}} in:blur={{duration: 500}}>
           <h1 class="text-4xl text-white mb-4 text-center">مواقيت الصلاة</h1>
           <Input
-            placeholder='المدينة' 
+            placeholder='اسم المدينة' 
             value={search}
             loading={is_loading}
             on_input={search_for_city} 
