@@ -4,6 +4,7 @@
   import LazyList from 'lazy-load-list/svelte'
   import Loading from './components/Loading.svelte'
   import { onMount } from "svelte";
+  import Github from "./components/Github.svelte";
 
   let time = new Date().toLocaleTimeString();
 
@@ -187,3 +188,5 @@
 {#if is_getting_data}
   <Loading/>
 {/if}
+
+<Github/>
