@@ -19,7 +19,7 @@ html{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('./imgs/bg.jpg');
+    background-image: url('/imgs/bg.jpg');
     background-size: cover;
     background-position: center;
 }
