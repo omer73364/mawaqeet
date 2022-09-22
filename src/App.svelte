@@ -1,6 +1,6 @@
 <script>
   import Input from "./components/Input.svelte";
-  import {blur,fade,slide} from 'svelte/transition';
+  import {blur,slide} from 'svelte/transition';
   import LazyList from 'lazy-load-list/svelte'
   import Loading from './components/Loading.svelte'
   import { onMount } from "svelte";
