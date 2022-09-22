@@ -8,11 +8,13 @@
 
   // Data
   let time = new Date().toLocaleTimeString();
+  let fullWindowHeight = window.innerHeight;
   let search = ''
   let error = ''
   let data = []
   let cities = []
   let show_input = true
+  let show_developed_by = true
   let is_loading = false
   let is_getting_data = true
   let mawaqeet_data
@@ -117,8 +119,23 @@
 			time = new Date().toLocaleTimeString('en-US',mawaqeet_data?.timezone && {timeZone: mawaqeet_data?.timezone});
 		}, 1000);
 
+    window.addEventListener("resize", function() {
+      if(window.innerHeight == fullWindowHeight) {
+        show_developed_by = true;
+      } else if(window.innerHeight < fullWindowHeight*0.9) {
+        show_developed_by = false;
+      }
+    });
+
 		return () => {
 			clearInterval(interval);
+      window.removeEventListener("resize", function() {
+        if(window.innerHeight == fullWindowHeight) {
+          show_developed_by = true;
+        } else if(window.innerHeight < fullWindowHeight*0.9) {
+          show_developed_by = false;
+        }
+      });
 		};
   })
 </script>
@@ -198,7 +215,7 @@
 {/if}
 
 <!-- Developed by and github button -->
-{#if !is_getting_data}
+{#if !is_getting_data && show_developed_by}
   <Github/>
   <h4 in:blur={{duration:1000,delay:500}} class="fixed whitespace-nowrap bottom-8 left-1/2 text-white text-lg md:text-2xl -translate-x-1/2 z-50">طُور بواسطة <a href="https://github.com/omer73364" target="_blank" class="hover:underline">عمر أنور</a> ♥</h4>
 {/if}
