@@ -150,19 +150,19 @@
     <div out:slide={{duration:500}}>
       <!-- Render data -->
       <div in:slide={{duration:500,delay:800}} class="w-full rounded-2xl bg-primary py-6 px-8 flex flex-col relative">
-        <img on:click={change_city} class="absolute cursor-pointer top-6 left-8" src="./imgs/pin.svg" alt="pin" width="30"/>
-        <h1 class="text-white text-4xl">{format_time(time)}</h1>
-        <h1 class="text-white text-6xl my-4">{mawaqeet_data.city}</h1>
-        <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.hijri}</h1>
-        <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.date}</h1>
+        <img on:click={change_city} class="absolute cursor-pointer top-6 left-8 w-7 md:w-8" src="./imgs/pin.svg" alt="pin"/>
+        <h1 class="text-white text-2xl md:text-4xl">{format_time(time)}</h1>
+        <h1 class="text-white text-5xl md:text-6xl my-4">{mawaqeet_data.city}</h1>
+        <h1 class="text-white opacity-80 text-xl md:text-2xl mb-1">{mawaqeet_data.hijri}</h1>
+        <h1 class="text-white opacity-80 text-xl md:text-2xl mb-1">{mawaqeet_data.date}</h1>
       </div>
 
       <!-- timings table -->
       <div in:slide={{duration:500,delay:1500}} class="w-full mt-4 rounded-2xl bg-white py-6 px-8 flex flex-col relative">
         {#each Object.keys(arabic_times) as key}
           <div class="w-full flex items-center border-b border-primary border-opacity-20 py-4 last:border-b-0 justify-between">
-            <h1 class="text-primary text-2xl flex-1 text-right">{get_arabic_time(key)}</h1>
-            <h1 class="text-primary text-2xl w-20 text-right">{time_convert(mawaqeet_data?.timings[key])}</h1>
+            <h1 class="text-primary text-xl md:text-2xl flex-1 text-right">{get_arabic_time(key)}</h1>
+            <h1 class="text-primary text-xl md:text-2xl w-20 text-right">{time_convert(mawaqeet_data?.timings[key])}</h1>
           </div>
         {/each}
       </div>
