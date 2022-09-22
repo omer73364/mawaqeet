@@ -28,8 +28,17 @@
     'نوفمير',
     'ديسمبر',
   ]
+  const arabic_times = {
+    "Fajr":"الفجر",
+    "Sunrise":"الشروق",
+    "Dhuhr":"الظهر",
+    "Asr":"العصر",
+    "Maghrib":"المغرب",
+    "Isha":"العشاء",
+  }
 
   const get_arabic_month = (month) => arabic_months[month-1]
+  const get_arabic_time = (time) => arabic_times[time]
   const format_time = (time) => {
     const result = time
     let [t,a] = result.split(' ')
@@ -38,6 +47,17 @@
     t = t.join(':')
     a = a.toLocaleLowerCase() == 'pm' ? 'م' : 'ص'
     return `${t} ${a}`
+  }
+  const time_convert = (time) => {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? 'ص' : 'م'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
   }
   
   const search_for_city = (event) => {
@@ -56,7 +76,8 @@
       city: search.split('-')[0],
       date:result?.data?.date?.gregorian?.day + '/' + get_arabic_month(result?.data?.date?.gregorian?.month?.number) + '/' + result?.data?.date?.gregorian?.year + 'م',
       hijri: result?.data?.date?.hijri?.day + '/' + result?.data?.date?.hijri?.month?.ar + '/' + result?.data?.date?.hijri?.year + 'هـ',
-      timezone: result?.data?.meta?.timezone
+      timezone: result?.data?.meta?.timezone,
+      timings: result?.data?.timings
     }
   }
 
@@ -64,7 +85,7 @@
     search = value
     cities = []
     const [city,country] = value.split('-')
-    const link = `http://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=8`
+    const link = `http://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}`
     get_data(link)
   }
 
@@ -102,13 +123,24 @@
 <main class="absolute inset-0 w-full h-screen z-50 flex items-center justify-center px-8">  
   <div class="w-96 relative">
   {#if mawaqeet_data && !show_input}
-    <!-- Render data -->
-    <div in:slide={{duration:500,delay:800}} out:fade={{duration:500}} class="w-full rounded-2xl bg-primary py-6 px-8 flex flex-col relative">
-      <img on:click={change_city} class="absolute cursor-pointer top-6 left-8" src="./imgs/pin.svg" alt="pin" width="30"/>
-      <h1 class="text-white text-4xl">{format_time(time)}</h1>
-      <h1 class="text-white text-6xl my-4">{mawaqeet_data.city}</h1>
-      <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.hijri}</h1>
-      <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.date}</h1>
+    <div out:slide={{duration:500}}>
+      <!-- Render data -->
+      <div in:slide={{duration:500,delay:800}} class="w-full rounded-2xl bg-primary py-6 px-8 flex flex-col relative">
+        <img on:click={change_city} class="absolute cursor-pointer top-6 left-8" src="./imgs/pin.svg" alt="pin" width="30"/>
+        <h1 class="text-white text-4xl">{format_time(time)}</h1>
+        <h1 class="text-white text-6xl my-4">{mawaqeet_data.city}</h1>
+        <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.hijri}</h1>
+        <h1 class="text-white opacity-80 text-2xl mb-1">{mawaqeet_data.date}</h1>
+      </div>
+
+      <div in:slide={{duration:500,delay:1500}} class="w-full mt-4 rounded-2xl bg-white py-6 px-8 flex flex-col relative">
+        {#each Object.keys(arabic_times) as key}
+          <div class="w-full flex items-center border-b border-primary border-opacity-20 py-4 last:border-b-0 justify-between">
+            <h1 class="text-primary text-2xl flex-1 text-right">{get_arabic_time(key)}</h1>
+            <h1 class="text-primary text-2xl w-20 text-right">{time_convert(mawaqeet_data?.timings[key])}</h1>
+          </div>
+        {/each}
+      </div>
     </div>
   {:else}
     <div in:blur={{duration: 500,delay:600}}>
