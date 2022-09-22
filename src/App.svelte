@@ -119,6 +119,7 @@
 			time = new Date().toLocaleTimeString('en-US',mawaqeet_data?.timezone && {timeZone: mawaqeet_data?.timezone});
 		}, 1000);
 
+    // detect keyboard open in mobile to avoid design issues
     window.addEventListener("resize", function() {
       if(window.innerHeight == fullWindowHeight) {
         show_developed_by = true;
